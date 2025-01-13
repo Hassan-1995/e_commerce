@@ -1,15 +1,11 @@
-import React from "react";
-import Poster from "./Poster";
 import MidSection from "./MidSection";
-import Footer from "./Footer";
+import Poster from "./Poster";
 
 const HomePage = () => {
   return (
     <>
       <Poster />
       <MidSection />
-
-      <Footer />
     </>
   );
 };

@@ -15,21 +15,24 @@ const ProductCard = ({
   price,
 }: ProductCardProps) => {
   return (
-    <div className="w-72 md:w-56 overflow-hidden">
+    <div className="w-full sm:w-[80%] md:w-[70%] lg:w-[80%] max-w-sm mx-auto overflow-hidden">
       <Link href={href} className="block">
-        <div className="flex items-center justify-center w-full h-72 bg-transparent transition-transform duration-300 hover:scale-110 hover:overflow-hidden">
+        <div className="flex items-center justify-center w-full h-[50vw] sm:h-[40vw] md:h-[30vw] lg:h-[25vw] bg-transparent transition-transform duration-300 hover:scale-110">
           <Image
             src={imageSrc}
             alt={description}
-            width={200}
-            height={200}
+            width={500}
+            height={500}
             priority
+            className="object-contain"
           />
         </div>
-        <div className="w-full h-12 bg-gray-200 flex items-center pl-2 leading-tight">
-          <p className="line-clamp-2 text-gray-900">{description}</p>
+        <div className="w-full h-[10%] bg-gray-200 flex items-center pl-2 leading-tight">
+          <p className="line-clamp-2 text-gray-900 text-sm sm:text-base">
+            {description}
+          </p>
         </div>
-        <div className="w-full h-6 bg-gray-200 text-sm font-medium flex items-center pl-2 text-gray-900">
+        <div className="w-full h-[5%] bg-gray-200 text-sm font-medium flex items-center pl-2 text-gray-900">
           Rs {price}
         </div>
       </Link>
