@@ -37,10 +37,12 @@ const Content = () => {
   return (
     <div className="">
       <div className="flex justify-between mb-10">
-        <h1 className="flex items-center text-lg md:text-3xl font-[500] mr-4">
-          <span className="text-gray-400 sm:mr-4 mr-2">ALL </span>
-          <span className="text-gray-900"> COLLECTIONS</span>
-          <span className="mx-4 w-16 h-[2px] bg-gray-700 hidden sm:inline-block"></span>
+        <h1 className="flex flex-wrap items-center text-lg md:text-3xl font-[500] mr-4">
+          <span className="text-gray-400 sm:mr-4 mr-2">ALL</span>
+          <div className="flex items-center flex-wrap">
+            <span className="text-gray-900">COLLECTIONS</span>
+            <span className="mx-4 w-16 h-[2px] bg-gray-700 hidden sm:inline-block"></span>
+          </div>
         </h1>
         <Dropdown
           options={[
@@ -52,6 +54,7 @@ const Content = () => {
           onSelect={handleSelect}
         />
       </div>
+
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mt-10 mb-5 mx-auto place-items-center">
         {collections.map((product) => (
           <ProductCard
@@ -62,7 +65,7 @@ const Content = () => {
             price={product.price}
           />
         ))}
-      {/* </div>
+        {/* </div>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-5 lg:grid-cols-4 mx-auto place-items-center"> */}
         {collections.map((product) => (
           <ProductCard

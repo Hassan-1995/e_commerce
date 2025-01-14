@@ -33,7 +33,7 @@ const Filter = ({
   };
 
   return (
-    <div className="border-2 border-zinc-500 rounded-sm shadow-md p-4 sm:w-60 w-full">
+    <div className="border-2 border-zinc-500 rounded-sm shadow-md p-4 lg:w-60 md:w-48 w-full">
       <h1 className="text-lg font-medium mb-3">{title}</h1>
       <ul className="space-y-2">
         {categories.map((category, index) => (

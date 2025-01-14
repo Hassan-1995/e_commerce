@@ -39,7 +39,6 @@ export default function RootLayout({
           <NavBar />
         </nav>
         <main className="w-screen">
-          {/* <NavBar /> */}
           {/* <Container> */}
           {children}
           {/* </Container> */}

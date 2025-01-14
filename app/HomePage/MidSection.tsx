@@ -47,7 +47,7 @@ const MidSection = () => {
       </div>
 
       {/* Latest Product Cards Section */}
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mt-10 mx-auto place-items-center">
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mt-10 px-10 mx-auto place-items-center">
         {products.map((product) => (
           <ProductCard
             key={product.href}
@@ -80,7 +80,7 @@ const MidSection = () => {
         </p>
       </div>
       {/* Best Product Cards Section */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-10 lg:grid-cols-4 mx-auto place-items-center">
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mt-10 px-10 mx-auto place-items-center">
         {products.map((product) => (
           <ProductCard
             key={product.href}
