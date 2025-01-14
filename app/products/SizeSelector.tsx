@@ -1,18 +1,25 @@
 "use client";
-import React, { useState } from "react";
+import React from "react";
 
-const SizeSelector = () => {
-  const [selectedSize, setSelectedSize] = useState<string | null>(null); // Explicitly type the state
+interface SizeSelectorProps {
+  selectedSize: string | null;
+  setSelectedSize: (size: string) => void;
+}
+
+const SizeSelector: React.FC<SizeSelectorProps> = ({
+  selectedSize,
+  setSelectedSize,
+}) => {
   const sizes = ["S", "M", "L", "XL", "XXL"]; // Size options
 
   const handleSizeSelect = (size: string) => {
-    setSelectedSize(size); // Update the selected size
+    setSelectedSize(size); // Update the selected size in the parent component
     console.log(`Selected size: ${size}`); // Log the selected size
   };
 
   return (
     <div className="space-y-5">
-      <p className="text-lg" >Select Size</p>
+      <p className="text-lg">Select Size</p>
       <div className="flex space-x-4">
         {sizes.map((size) => (
           <button

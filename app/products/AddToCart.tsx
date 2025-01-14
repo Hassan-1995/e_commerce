@@ -1,18 +1,18 @@
 "use client";
-import { useState } from "react";
 import { FiMinus, FiPlus } from "react-icons/fi";
 
-const AddToCart = ({ itemName }: { itemName: string }) => {
-  const [quantity, setQuantity] = useState<number>(1);
-
-  const handleAddToCart = () => {
-    console.log(`Added to cart: ${quantity} of ${itemName}`);
-    // Perform additional logic, like updating a cart context or API call
-  };
-
-  const incrementQuantity = () => setQuantity((prev) => prev + 1);
+const AddToCart = ({
+  quantity,
+  setQuantity,
+  handleAddToCart,
+}: {
+  quantity: number;
+  setQuantity: (newQuantity: number) => void;
+  handleAddToCart: () => void;
+}) => {
+  const incrementQuantity = () => setQuantity(quantity + 1);
   const decrementQuantity = () =>
-    setQuantity((prev) => (prev > 1 ? prev - 1 : prev)); // Prevent quantity < 1
+    setQuantity(quantity > 1 ? quantity - 1 : quantity);
 
   return (
     <div className="mt-5 space-y-5 rounded-md w-40">
