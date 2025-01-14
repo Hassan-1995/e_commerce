@@ -7,25 +7,25 @@ import { FiUsers, FiTruck } from "react-icons/fi";
 const MidSection = () => {
   const products = [
     {
-      href: "/collection/1",
+      href: "/products/1",
       imageSrc: "/t_shirt_01.png",
       description: "Men Round Neck Pure Cotton T-shirt",
       price: "60",
     },
     {
-      href: "/collection/2",
+      href: "/products/2",
       imageSrc: "/t_shirt_02.png",
       description: "Women V-Neck Stylish Top",
       price: "70",
     },
     {
-      href: "/collection/3",
+      href: "/products/3",
       imageSrc: "/t_shirt_03.png",
       description: "Casual Denim Jacket",
       price: "90",
     },
     {
-      href: "/collection/4",
+      href: "/products/4",
       imageSrc: "/t_shirt_04.png",
       description: "Classic Denim Jean",
       price: "50",

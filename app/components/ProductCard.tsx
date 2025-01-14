@@ -5,6 +5,7 @@ interface ProductCardProps {
   href: string;
   imageSrc: string;
   description: string;
+  detail: string;
   price: string | number;
 }
 
@@ -12,11 +13,18 @@ const ProductCard = ({
   href,
   imageSrc,
   description,
+  detail,
   price,
 }: ProductCardProps) => {
   return (
     <div className="w-full sm:w-[80%] md:w-[90%] lg:w-[80%] max-w-sm mx-auto overflow-hidden">
-      <Link href={href} className="block">
+      <Link
+        href={{
+          pathname: href,
+          query: { imageSrc, description, detail, price },
+        }}
+        className="block"
+      >
         <div className="flex items-center justify-center w-full h-[50vw] sm:h-[40vw] md:h-[30vw] lg:h-[25vw] bg-transparent transition-transform duration-300 hover:scale-110">
           <Image
             src={imageSrc}
