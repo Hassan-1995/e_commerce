@@ -2,6 +2,7 @@
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import { FaTrashAlt } from "react-icons/fa"; // Add a trash icon for deleting items
+import EmptyCart from "./EmptyCart";
 
 interface CartItem {
   id: string;
@@ -33,8 +34,10 @@ const Cart = () => {
     localStorage.setItem("cart", JSON.stringify(updatedItems)); // Update cart in localStorage
   };
 
-  const handleDeleteItem = (id: string) => {
-    const updatedItems = cartItems.filter((item) => item.id !== id);
+  const handleDeleteItem = (index: number) => {
+    const updatedItems = cartItems.filter(
+      (_, itemIndex) => itemIndex !== index
+    );
     setCartItems(updatedItems);
     localStorage.setItem("cart", JSON.stringify(updatedItems)); // Update cart in localStorage
   };
@@ -57,14 +60,13 @@ const Cart = () => {
 
   return (
     <div className="p-4">
-      <h2 className="text-2xl font-bold mb-4">Your Cart</h2>
       {cartItems.length === 0 ? (
-        <p>Your cart is empty</p>
+        <EmptyCart />
       ) : (
         <div>
-          {cartItems.map((item) => (
+          {cartItems.map((item, index) => (
             <div
-              key={item.id}
+              key={index}
               className="flex items-center justify-between mb-4 border-b pb-4"
             >
               <div className="flex items-center">
@@ -118,7 +120,7 @@ const Cart = () => {
               <div>
                 <FaTrashAlt
                   className="text-red-500 cursor-pointer ml-4"
-                  onClick={() => handleDeleteItem(item.id)}
+                  onClick={() => handleDeleteItem(index)}
                 />
               </div>
 

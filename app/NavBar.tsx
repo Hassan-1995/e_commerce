@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import {
   FiMenu,
@@ -15,6 +15,7 @@ import {
 const NavBar = () => {
   const currentPath = usePathname();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [cartCount, setCartCount] = useState(0);
 
   const links = [
     { label: "Home", href: "/" },
@@ -26,8 +27,16 @@ const NavBar = () => {
   const icons = [
     { href: "/search", icon: FiSearch },
     { href: "/profile", icon: FiUser },
-    { href: "/cart", icon: FiShoppingBag },
   ];
+
+  // Fetch the cart length from localStorage
+  useEffect(() => {
+    const storedCart = localStorage.getItem("cart");
+    if (storedCart) {
+      const parsedCart = JSON.parse(storedCart);
+      setCartCount(parsedCart.length); // Update the cart count
+    }
+  }, []); // Run this once when the component mounts
 
   return (
     <nav className="flex bg-gray-600 w-screen items-center justify-between px-8 py-4 text-white">
@@ -53,7 +62,7 @@ const NavBar = () => {
       </ul>
 
       {/* Right-Aligned Icons */}
-      <ul className="space-x-8 hidden md:flex">
+      <ul className="space-x-8 hidden pr-2 md:flex items-center">
         {icons.map((iconLink) => (
           <li key={iconLink.href}>
             <Link
@@ -64,6 +73,20 @@ const NavBar = () => {
             </Link>
           </li>
         ))}
+        {/* Cart Icon with Count */}
+        <li>
+          <Link
+            href="/cart"
+            className="relative hover:text-blue-300 transition-colors"
+          >
+            <FiShoppingBag size={24} />
+            {cartCount > 0 && (
+              <span className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full text-xs w-5 h-5 flex items-center justify-center">
+                {cartCount}
+              </span>
+            )}
+          </Link>
+        </li>
       </ul>
 
       <button

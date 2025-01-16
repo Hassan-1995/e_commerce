@@ -30,28 +30,44 @@ const ProductDetailPage = () => {
       price: string | number;
     }> = cartData ? JSON.parse(cartData) : [];
 
-    if (selectedSize !== null) {
-      console.log(
-        `Added to cart: ${quantity} ${description} of size ${selectedSize}`
+    // Check if a size is selected
+    if (selectedSize === null) {
+      alert(
+        "You forgot to pick a size. Please pick a size first before adding an item to the cart."
       );
-      // Create a new cart item
-      const cartItem = {
-        id: product_id, // Ensure product_id is defined
-        name: description!, // Non-null assertion since description is from searchParams
-        size: selectedSize,
-        imageSrc: imageSrc!,
-        quantity: quantity,
-        price: price!,
-      };
-
-      // Add the new item to the cart
-      cart.push(cartItem);
-      // Save the updated cart back to localStorage
-      localStorage.setItem("cart", JSON.stringify(cart));
-    } else {
-      console.error("Please select a size before adding to cart.");
+      return;
     }
-    // Perform additional actions like sending data to a backend, etc.
+
+    console.log(
+      `Added to cart: ${quantity} ${description} of size ${selectedSize}`
+    );
+
+    // Check if the item already exists in the cart
+    const existingItemIndex = cart.findIndex(
+      (item) => item.id === product_id && item.size === selectedSize
+    );
+
+    if (existingItemIndex !== -1) {
+      alert("This item is already in your cart.");
+      return;
+    }
+
+    // Create a new cart item
+    const cartItem = {
+      id: product_id, // Ensure product_id is defined
+      name: description!, // Non-null assertion since description is from searchParams
+      size: selectedSize,
+      imageSrc: imageSrc!,
+      quantity: quantity,
+      price: price!,
+    };
+
+    // Add the new item to the cart
+    cart.push(cartItem);
+    // Save the updated cart back to localStorage
+    localStorage.setItem("cart", JSON.stringify(cart));
+
+    alert("Item added to your cart successfully!");
   };
 
   return (
