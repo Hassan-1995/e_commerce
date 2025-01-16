@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 
-interface ProductCardProps {
+interface Product {
   href: string;
   imageSrc: string;
   description: string;
@@ -9,13 +9,13 @@ interface ProductCardProps {
   price: string | number;
 }
 
-const ProductCard = ({
-  href,
-  imageSrc,
-  description,
-  detail,
-  price,
-}: ProductCardProps) => {
+interface ProductCardProps {
+  product: Product;
+}
+
+const ProductCard = ({ product }: ProductCardProps) => {
+  const { href, imageSrc, description, detail, price } = product;
+
   return (
     <div className="w-full sm:w-[80%] md:w-[90%] lg:w-[80%] max-w-sm mx-auto overflow-hidden">
       <Link
@@ -32,7 +32,6 @@ const ProductCard = ({
             width={150}
             height={250}
             priority
-            // className="object-contain"
             className="object-contain w-[150px] h-[250px] lg:w-[250px] lg:h-[250px]"
           />
         </div>

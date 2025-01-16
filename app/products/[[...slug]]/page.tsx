@@ -4,23 +4,52 @@ import React, { useState } from "react";
 import SizeSelector from "../SizeSelector";
 import AddToCart from "../AddToCart";
 
-import { useSearchParams } from "next/navigation";
+import { useSearchParams, useParams } from "next/navigation";
 
 const ProductDetailPage = () => {
   const [selectedSize, setSelectedSize] = useState<string | null>(null);
   const [quantity, setQuantity] = useState<number>(1);
   const searchParams = useSearchParams();
+  const params = useParams(); // Access the params asynchronously
 
+  const product_id = String(params.slug); // Get the slug from the params object
   const imageSrc = searchParams.get("imageSrc");
   const description = searchParams.get("description");
   const detail = searchParams.get("detail");
   const price = searchParams.get("price");
 
   const handleAddToCart = () => {
+    // Retrieve the cart from localStorage or initialize an empty array
+    const cartData = localStorage.getItem("cart");
+    const cart: Array<{
+      id: string;
+      name: string;
+      size: string;
+      imageSrc: string;
+      quantity: number;
+      price: string | number;
+    }> = cartData ? JSON.parse(cartData) : [];
+
     if (selectedSize !== null) {
       console.log(
         `Added to cart: ${quantity} ${description} of size ${selectedSize}`
       );
+      // Create a new cart item
+      const cartItem = {
+        id: product_id, // Ensure product_id is defined
+        name: description!, // Non-null assertion since description is from searchParams
+        size: selectedSize,
+        imageSrc: imageSrc!,
+        quantity: quantity,
+        price: price!,
+      };
+
+      // Add the new item to the cart
+      cart.push(cartItem);
+      // Save the updated cart back to localStorage
+      localStorage.setItem("cart", JSON.stringify(cart));
+    } else {
+      console.error("Please select a size before adding to cart.");
     }
     // Perform additional actions like sending data to a backend, etc.
   };
@@ -43,7 +72,7 @@ const ProductDetailPage = () => {
         {/* Product Details Section */}
         <div className="space-y-6 pb-10">
           <p className="text-xl md:text-2xl font-medium">{description}</p>
-          <p className="text-sm md:text-base">Review</p>
+          <p className="text-sm md:text-base">{product_id}</p>
           <p className="text-2xl md:text-3xl font-bold">Rs {price}</p>
           <p className="text-base md:text-lg w-full lg:w-96">{detail}</p>
 

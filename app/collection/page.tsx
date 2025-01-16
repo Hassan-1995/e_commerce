@@ -26,9 +26,9 @@ const CollectionPage = () => {
   };
 
   return (
-    <div className="flex flex-col sm:flex-row justify-center sm:space-x-16 mt-12 mx-4">
-      <div>
-        <h1 className="text-2xl font-medium mb-10 hidden sm:block">Filter</h1>
+    <div className="flex flex-col sm:flex-row sm:space-x-16 mt-12 mx-4">
+      <div className="mb-10 lg:w-1/5">
+        <h1 className="text-2xl font-medium mb-10 hidden sm:block ">Filter</h1>
         <button
           className="text-2xl font-medium mb-5 sm:hidden"
           onClick={() => setIsFilterMenuOpen(!isFilterMenuOpen)}
@@ -50,7 +50,7 @@ const CollectionPage = () => {
         </div>
 
         {isFilterMenuOpen && (
-          <div className="space-y-6">
+          <div className="space-y-6 w-full">
             <Filter
               initialCategories={initialCategories}
               onCategoryChange={handleCategoryChange}
@@ -64,7 +64,9 @@ const CollectionPage = () => {
           </div>
         )}
       </div>
-      <Content />
+      <div className="w-full ">
+        <Content />
+      </div>
     </div>
   );
 };

@@ -1,34 +1,14 @@
 "use client";
 
 import IconDisplay from "../components/IconDisplay";
-import ProductCard from "../components/ProductCard";
-
-import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
-// import toast, { Toaster } from "react-hot-toast";
+import { Skeleton } from "@/app/components";
+// import ProductCard from "../components/ProductCard";
 
 import { FiTruck, FiUsers } from "react-icons/fi";
 import { RiExchangeFundsFill } from "react-icons/ri";
-import LoadingContent from "./loading";
 
-interface Product {
-  href: string;
-  imageSrc: string;
-  description: string;
-  price: number;
-  detail: string;
-}
-
-const MidSection = () => {
-  const { data: products, error, isLoading } = useProducts();
-
-  if (isLoading) {
-    return <LoadingContent />;
-  }
-
-  if (error instanceof Error) {
-    return <div>Error: {error.message}</div>;
-  }
+const LoadingContent = () => {
+  const placeholderItems = Array(8).fill(null); // Adjust number to simulate loading cards
 
   return (
     <div className="mx- mb-10">
@@ -46,11 +26,20 @@ const MidSection = () => {
 
       {/* Latest Product Cards Section */}
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mt-10 px-10 mx-auto place-items-center">
-        {products?.map((product) => (
-          <ProductCard key={product.href} product={product} />
-        ))}
-        {products?.map((product) => (
-          <ProductCard key={product.href} product={product} />
+        {placeholderItems.map((_, index) => (
+          <div
+            key={index}
+            className="w-full h-72 flex flex-col items-center justify-between bg-gray-100 rounded-lg p-4 shadow-md"
+          >
+            <div className="w-full h-36 bg-gray-200 rounded-md">
+              <Skeleton className="h-full" />
+            </div>
+            <div className="w-full mt-4">
+              <Skeleton className="h-6 w-3/4" />
+              <Skeleton className="h-4 w-1/2 mt-2" />
+            </div>
+            <Skeleton className="h-8 w-1/3 mt-4" />
+          </div>
         ))}
       </div>
 
@@ -67,8 +56,20 @@ const MidSection = () => {
       </div>
       {/* Best Product Cards Section */}
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mt-10 px-10 mx-auto place-items-center">
-        {products?.map((product) => (
-          <ProductCard key={product.href} product={product} />
+        {placeholderItems.map((_, index) => (
+          <div
+            key={index}
+            className="w-full h-72 flex flex-col items-center justify-between bg-gray-100 rounded-lg p-4 shadow-md"
+          >
+            <div className="w-full h-36 bg-gray-200 rounded-md">
+              <Skeleton className="h-full" />
+            </div>
+            <div className="w-full mt-4">
+              <Skeleton className="h-6 w-3/4" />
+              <Skeleton className="h-4 w-1/2 mt-2" />
+            </div>
+            <Skeleton className="h-8 w-1/3 mt-4" />
+          </div>
         ))}
       </div>
       <div className="grid grid-cols-3 gap-6 mt-24 md:grid-cols-3 mx-auto place-items-center mb-14">
@@ -92,12 +93,4 @@ const MidSection = () => {
   );
 };
 
-export default MidSection;
-
-const useProducts = () =>
-  useQuery<Product[]>({
-    queryKey: ["products"],
-    queryFn: () => axios.get("/api/products").then((res) => res.data),
-    staleTime: 60 * 1000, // Cache products for 1 minute
-    retry: 3, // Retry failed requests up to 3 times
-  });
+export default LoadingContent;
