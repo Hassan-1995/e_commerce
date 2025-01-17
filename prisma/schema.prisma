@@ -13,6 +13,17 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+// model Product {
+//   id          Int      @id @default(autoincrement())
+//   href        String   @unique
+//   imageSrc    String
+//   description String
+//   price       Float
+//   detail      String
+//   createdAt   DateTime @default(now())
+//   updatedAt   DateTime @default(now()) @updatedAt
+// }
+
 model Product {
   id          Int      @id @default(autoincrement())
   href        String   @unique
@@ -21,5 +32,73 @@ model Product {
   price       Float
   detail      String
   createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  updatedAt   DateTime @default(now()) @updatedAt
+  orders      Order[] // Relation to Order model
+}
+
+model Order {
+  id            Int      @id @default(autoincrement())
+  userId        String   // Foreign key to User
+  productId     Int      // Foreign key to Product
+  quantity      Int      @default(1) // Quantity of the product ordered
+  product_price Float    // Price of a single product
+  total_price   Float    // Total price for the order (quantity * product_price)
+  status        String   @default("Pending") // e.g., Pending, Processing, Shipped, Delivered
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @default(now()) @updatedAt
+
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  product       Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String  @map("user_id")
+  type              String
+  provider          String
+  providerAccountId String  @map("provider_account_id")
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@map("accounts")
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique @map("session_token")
+  userId       String   @map("user_id")
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("sessions")
+}
+
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String?   @unique
+  emailVerified DateTime? @map("email_verified")
+  image         String?
+  accounts      Account[]
+  sessions      Session[]
+  orders        Order[] // Relation to Order model
+
+  @@map("users")
+}
+
+model VerificationToken {
+  identifier String
+  token      String
+  expires    DateTime
+
+  @@unique([identifier, token])
+  @@map("verification_tokens")
 }

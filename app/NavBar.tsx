@@ -1,4 +1,6 @@
 "use client";
+import { useSession } from "next-auth/react";
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -14,6 +16,8 @@ import {
 
 const NavBar = () => {
   const currentPath = usePathname();
+  const { status, data: session } = useSession();
+
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [cartCount, setCartCount] = useState(0);
 
@@ -24,10 +28,7 @@ const NavBar = () => {
     { label: "Contact", href: "/contact" },
   ];
 
-  const icons = [
-    { href: "/search", icon: FiSearch },
-    { href: "/profile", icon: FiUser },
-  ];
+  const icons = [{ href: "/search", icon: FiSearch }];
 
   // Fetch the cart length from localStorage
   useEffect(() => {
@@ -74,6 +75,34 @@ const NavBar = () => {
           </li>
         ))}
         {/* Cart Icon with Count */}
+
+        {status === "authenticated" && (
+          <li>
+            <Link
+              href="/api/auth/signout"
+              className="relative hover:text-blue-300 transition-colors"
+            >
+              <Image
+                width={30} // or a suitable size
+                height={30}
+                className="rounded-full"
+                src={session!.user!.image!}
+                alt="User Profile Picture"
+              />
+            </Link>
+          </li>
+        )}
+        {status === "unauthenticated" && (
+          <li>
+            <Link
+              href="/api/auth/signin"
+              className="relative hover:text-blue-300 transition-colors"
+            >
+              <FiUser size={24} />
+            </Link>
+          </li>
+        )}
+
         <li>
           <Link
             href="/cart"
@@ -89,12 +118,71 @@ const NavBar = () => {
         </li>
       </ul>
 
+      <div className="md:hidden flex space-x-3 items-center text-white text-3xl focus:outline-none">
+        {status === "authenticated" && (
+          <Link
+            href="/api/auth/signout"
+            className="relative hover:text-blue-300 transition-colors"
+          >
+            <Image
+              width={30} // or a suitable size
+              height={30}
+              className="rounded-full"
+              src={session!.user!.image!}
+              alt="User Profile Picture"
+            />
+          </Link>
+        )}
+        {status === "unauthenticated" && (
+          <Link
+            href="/api/auth/signin"
+            className="relative hover:text-blue-300 transition-colors"
+          >
+            <FiUser size={24} />
+          </Link>
+        )}
+
+        <Link
+          href="/cart"
+          className="relative hover:text-blue-300 transition-colors"
+        >
+          <FiShoppingBag size={24} />
+          {cartCount > 0 && (
+            <span className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full text-xs w-5 h-5 flex items-center justify-center">
+              {cartCount}
+            </span>
+          )}
+        </Link>
+
+        <button onClick={() => setIsMenuOpen(!isMenuOpen)}>
+          {isMenuOpen ? <FiX /> : <FiMenu />}
+        </button>
+      </div>
+
+      {/* 
       <button
         className="md:hidden text-white text-3xl focus:outline-none"
         onClick={() => setIsMenuOpen(!isMenuOpen)}
       >
-        {isMenuOpen ? <FiX /> : <FiMenu />}
-      </button>
+        {isMenuOpen ? (
+          <FiX />
+        ) : (
+          <div className="flex items-center space-x-3">
+            <Link
+              href="/cart"
+              className="relative hover:text-blue-300 transition-colors"
+            >
+              <FiShoppingBag size={24} />
+              {cartCount > 0 && (
+                <span className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full text-xs w-5 h-5 flex items-center justify-center">
+                  {cartCount}
+                </span>
+              )}
+            </Link>
+            <FiMenu />
+          </div>
+        )}
+      </button> */}
 
       {/* Mobile and Tablet Links (Collapsible Menu) */}
       <div

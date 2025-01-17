@@ -1,19 +1,21 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono, Roboto } from "next/font/google";
+// import { Geist, Geist_Mono, Roboto } from "next/font/google";
+import { Roboto } from "next/font/google";
 import "./globals.css";
 import NavBar from "./NavBar";
 import Footer from "./Footer";
 import QueryClientProvider from "./QueryClientProvider";
+import AuthProvider from "./auth/Prodiver";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
+// const geistSans = Geist({
+//   variable: "--font-geist-sans",
+//   subsets: ["latin"],
+// });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+// const geistMono = Geist_Mono({
+//   variable: "--font-geist-mono",
+//   subsets: ["latin"],
+// });
 
 const roboto = Roboto({
   subsets: ["latin"],
@@ -36,17 +38,19 @@ export default function RootLayout({
         className={roboto.className}
         // className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <QueryClientProvider>
-          <nav className="z-50">
-            <NavBar />
-          </nav>
-          <main className="w-screen">
-            {/* <Container> */}
-            {children}
-            {/* </Container> */}
-          </main>
-          <Footer />
-        </QueryClientProvider>
+        <AuthProvider>
+          <QueryClientProvider>
+            <nav className="z-50">
+              <NavBar />
+            </nav>
+            <main className="w-screen">
+              {/* <Container> */}
+              {children}
+              {/* </Container> */}
+            </main>
+            <Footer />
+          </QueryClientProvider>
+        </AuthProvider>
       </body>
     </html>
   );
