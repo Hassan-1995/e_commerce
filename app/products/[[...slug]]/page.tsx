@@ -54,8 +54,8 @@ const ProductDetailPage = () => {
 
     // Create a new cart item
     const cartItem = {
-      id: product_id, // Ensure product_id is defined
-      name: description!, // Non-null assertion since description is from searchParams
+      id: product_id,
+      name: description!,
       size: selectedSize,
       imageSrc: imageSrc!,
       quantity: quantity,

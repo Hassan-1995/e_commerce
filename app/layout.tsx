@@ -35,7 +35,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={roboto.className}
+        className={`${roboto.className} flex flex-col min-h-screen`}
         // className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <AuthProvider>
@@ -43,7 +43,7 @@ export default function RootLayout({
             <nav className="z-50">
               <NavBar />
             </nav>
-            <main className="w-screen">
+            <main className="flex-grow w-screen">
               {/* <Container> */}
               {children}
               {/* </Container> */}

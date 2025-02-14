@@ -34,7 +34,7 @@ export async function POST(req: NextRequest) {
 
     // Insert all orders using Prisma transaction
     const orders = await prisma.$transaction(
-      validOrders.map((order) => prisma.order.create({ data: order }))
+      validOrders.map((order: any) => prisma.order.create({ data: order }))
     );
 
     return NextResponse.json(
@@ -44,6 +44,42 @@ export async function POST(req: NextRequest) {
   } catch (error: any) {
     console.error("Error creating order:", error);
 
+    return NextResponse.json(
+      { error: error.message || "Internal Server Error" },
+      { status: 500 }
+    );
+  }
+}
+
+export async function GET(request: NextRequest) {
+  const orders = await prisma.order.findMany();
+  return NextResponse.json(orders);
+}
+
+export async function PUT(req: NextRequest) {
+  try {
+    const body = await req.json();
+    const { orderId, status } = body;
+
+    if (!orderId || !status) {
+      return NextResponse.json(
+        { error: "Missing orderId or status." },
+        { status: 400 }
+      );
+    }
+
+    // Update order status using Prisma
+    const updatedOrder = await prisma.order.update({
+      where: { id: orderId },
+      data: { status, updatedAt: new Date() },
+    });
+
+    return NextResponse.json(
+      { message: "Order status updated successfully", updatedOrder },
+      { status: 200 }
+    );
+  } catch (error: any) {
+    console.error("Error updating order status:", error);
     return NextResponse.json(
       { error: error.message || "Internal Server Error" },
       { status: 500 }

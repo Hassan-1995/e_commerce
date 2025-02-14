@@ -26,6 +26,7 @@ const NavBar = () => {
     { label: "Collection", href: "/collection" },
     { label: "About", href: "/about" },
     { label: "Contact", href: "/contact" },
+    { label: "Admin", href: "/admin/orders" },
   ];
 
   const icons = [{ href: "/search", icon: FiSearch }];
