@@ -6,7 +6,6 @@ import ProductCard from "../components/ProductCard";
 import Dropdown from "./DropDownBox";
 import LoadingContent from "./loading";
 
-// Define the Product type to match the backend structure
 interface Product {
   href: string;
   imageSrc: string;
@@ -71,6 +70,6 @@ const useProducts = () =>
   useQuery<Product[]>({
     queryKey: ["products"],
     queryFn: () => axios.get("/api/products").then((res) => res.data),
-    staleTime: 60 * 1000, // Cache products for 1 minute
-    retry: 3, // Retry failed requests up to 3 times
+    staleTime: 60 * 1000, 
+    retry: 3, 
   });

@@ -1,4 +1,9 @@
 "use client";
+
+import { useSession } from "next-auth/react";
+import axios from "axios";
+import toast from "react-hot-toast";
+
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import { FaTrashAlt } from "react-icons/fa"; // Add a trash icon for deleting items
@@ -15,6 +20,8 @@ interface CartItem {
 
 const Cart = () => {
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
+
+  const { status, data: session } = useSession();
 
   useEffect(() => {
     // Retrieve the cart data from localStorage
@@ -42,9 +49,47 @@ const Cart = () => {
     localStorage.setItem("cart", JSON.stringify(updatedItems)); // Update cart in localStorage
   };
 
-  const handleConfirmOrder = () => {
-    console.log("Order Confirmed:", cartItems);
-    // You can perform additional actions here like sending the order to a server
+  // const handleConfirmOrder = () => {
+  //   console.log("Order Confirmed:", cartItems);
+  //   console.log(session?.user);
+  //   console.log(status);
+  //   // You can perform additional actions here like sending the order to a server
+  // };
+
+  const handleConfirmOrder = async () => {
+    if (cartItems.length === 0) {
+      toast.error("Your cart is empty!");
+      return;
+    }
+
+    try {
+      const userEmail = session?.user?.email; // Get user email from session
+
+      const orderData = cartItems.map((item) => ({
+        productId: item.id, // Convert id to productId
+        quantity: item.quantity,
+        status: "Pending", // Default status
+        createdAt: new Date().toISOString(), // Current timestamp
+        updatedAt: new Date().toISOString(), // Current timestamp
+        product_price: parseFloat(item.price), // Ensure price is a number
+        total_price: parseFloat(item.price) * item.quantity, // Calculate total
+      }));
+
+      console.log(userEmail, orderData);
+      const response = await axios.post("/api/orders", {
+        userEmail,
+        orderData,
+      });
+
+      if (response.status === 201) {
+        toast.success("Order placed successfully!");
+        localStorage.removeItem("cart");
+        setCartItems([]);
+      }
+    } catch (error) {
+      toast.error("Failed to place order. Try again!");
+      console.error("Order error:", error);
+    }
   };
 
   const calculateItemTotal = (quantity: number, price: string) => {
